@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExecutorSystemKey | SistemaPCXD</title>
+    <style>
+        body { background: #050505; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
+        .card { background: #111; border: 2px solid #0000ff; border-radius: 15px; padding: 30px; margin-top: 50px; box-shadow: 0 0 20px rgba(0,0,255,0.3); max-width: 400px; margin-left: auto; margin-right: auto; }
+        h1 { color: #0000ff; font-size: 24px; margin-bottom: 5px; }
+        p { color: #888; font-size: 14px; }
+        .key-box { background: #000; border: 1px dashed #00ff00; color: #00ff00; padding: 15px; font-family: monospace; font-size: 22px; margin: 20px 0; display: none; border-radius: 8px; }
+        button { background: #0000ff; color: white; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
+        button:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>SISTEMA PC XD</h1>
+        <p>Tu llave diaria para el ejecutor R6</p>
+        
+        <div id="key-box" class="key-box"></div>
+        
+        <button onclick="generateKey()">GENERAR KEY AHORA</button>
+    </div>
+
+    <script>
+        function generateKey() {
+            const d = new Date();
+            // Usamos la fecha como "semilla" para que la key sea la misma todo el día
+            const seed = d.getDate().toString() + (d.getMonth() + 1).toString() + d.getFullYear().toString();
+            
+            // Generador simple de letras y números basado en la fecha
+            let hash = 0;
+            for (let i = 0; i < seed.length; i++) {
+                hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+                hash |= 0;
+            }
+            
+            const chars = "ABCDEF1234567890";
+            let finalKey = "PCXD-";
+            for (let i = 0; i < 5; i++) {
+                finalKey += chars.charAt(Math.abs((hash + i) % chars.length));
+            }
+
+            const box = document.getElementById("key-box");
+            box.innerText = finalKey;
+            box.style.display = "block";
+            
+            navigator.clipboard.writeText(finalKey);
+            alert("Key copiada: " + finalKey);
+        }
+    </script>
+</body>
+</html>
